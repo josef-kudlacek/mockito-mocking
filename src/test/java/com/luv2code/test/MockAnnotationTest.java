@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
@@ -65,6 +66,16 @@ public class MockAnnotationTest {
 
         assertEquals(88.31, applicationService.findGradePointAverage(collegeStudent
                 .getStudentGrades().getMathGradeResults()));
+    }
+
+    @DisplayName("Not Null")
+    @Test
+    public void testAssertNotNull() {
+        when(applicationDao.checkNull(studentGrades.getMathGradeResults()))
+                .thenReturn(true);
+
+        assertNotNull(applicationService.checkNull(collegeStudent.getStudentGrades()
+                .getMathGradeResults()), "Object should not be null");
     }
 
 }
