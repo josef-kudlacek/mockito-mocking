@@ -8,11 +8,10 @@ import com.luv2code.component.service.ApplicationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,10 +30,10 @@ public class MockAnnotationTest {
     @Autowired
     private StudentGrades studentGrades;
 
-    @Mock
+    @MockBean
     private ApplicationDao applicationDao;
 
-    @InjectMocks
+    @Autowired
     private ApplicationService applicationService;
 
     @BeforeEach
@@ -56,6 +55,16 @@ public class MockAnnotationTest {
 
         Mockito.verify(applicationDao, times(1)).addGradeResultsForSingleClass(
                 studentGrades.getMathGradeResults());
+    }
+
+    @DisplayName("Find Gpa")
+    @Test
+    public void assertEqualsTestFindGpa() {
+        when(applicationDao.findGradePointAverage(studentGrades.getMathGradeResults()))
+                .thenReturn(88.31);
+
+        assertEquals(88.31, applicationService.findGradePointAverage(collegeStudent
+                .getStudentGrades().getMathGradeResults()));
     }
 
 }
